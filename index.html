@@ -63,6 +63,7 @@
   .hello h1 em{font-style:italic;font-weight:500;color:var(--terracotta)}
   .hello p{margin-top:8px;font-size:clamp(13px,1.6vw,15px);color:var(--brown);max-width:56ch}
   .hello p b{color:var(--ink)}
+  .hello p.hello-sub{margin-top:10px}
 
   .bike-wrap{width:min(92vw,760px);position:relative}
   .bike-svg{width:100%;height:auto;display:block}
@@ -268,7 +269,8 @@
 <div class="scene">
   <div class="hello">
     <h1>Hello! I'm <em>Abbiraam</em>.</h1>
-    <p>Engineer at Tata Elxsi, building toward machine learning — and this is my motorcycle. <b>Every part of the bike opens a chapter. Tap around.</b></p>
+    <p>I see you caught me during my daily commute — ah well! No worries as I have secretly integrated my resume into various parts of my bike!</p>
+    <p class="hello-sub">But yes, for those who want to cut to the chase — I've added my ATS-friendly resume down the road, literally!</p>
   </div>
 
   <div class="bike-wrap">
@@ -304,8 +306,6 @@
           </g>
           <circle cx="575" cy="325" r="12" fill="#26201B"/>
         </g>
-        <!-- front fender -->
-        <path d="M520 268 a80 80 0 0 1 96 24 l-12 10 a66 66 0 0 0 -78 -22z" fill="#26201B"/>
         <!-- swingarm -->
         <path d="M185 320 L340 306 L340 326 L188 336z" fill="#33291F"/>
         <!-- trellis frame -->
@@ -344,10 +344,8 @@
         <circle cx="500" cy="193" r="24" fill="#26201B" stroke="#3B332B" stroke-width="3"/>
         <ellipse cx="511" cy="193" rx="11" ry="21" fill="#D8D0C2"/>
         <ellipse cx="514" cy="193" rx="6" ry="13" fill="#FFF8E4" class="lens-bright"/>
-        <!-- handlebar + bar-end mirror -->
-        <path d="M478 184 q30 -16 56 -6" stroke="#26201B" stroke-width="8" fill="none" stroke-linecap="round"/>
-        <line x1="482" y1="182" x2="470" y2="160" stroke="#26201B" stroke-width="5" stroke-linecap="round"/>
-        <circle cx="468" cy="154" r="8" fill="#3B332B"/>
+        <!-- handlebar grip -->
+        <path d="M470 190 l16 -10" stroke="#26201B" stroke-width="8" stroke-linecap="round"/>
       </g>
       <g id="riderG">
         <!-- backpack (behind torso) -->
@@ -377,10 +375,10 @@
         <circle class="hot" data-panel="school" cx="185" cy="325" r="84" tabindex="0" role="button" aria-label="Rear wheel: school days"><title>rear wheel → school days</title></circle>
         <circle class="hot" data-panel="college" cx="575" cy="325" r="84" tabindex="0" role="button" aria-label="Front wheel: college"><title>front wheel → college</title></circle>
         <circle class="hot" data-panel="skills" cx="428" cy="112" r="40" tabindex="0" role="button" aria-label="Helmet: skills"><title>helmet → skills</title></circle>
-        <path class="hot" data-panel="work" d="M395 186 q60 -6 88 28 l-6 22 q-44 -10 -90 -8z" tabindex="0" role="button" aria-label="Tank: where I work"><title>tank → where I work</title></path>
+        <path class="hot" data-panel="work" d="M300 240 q6 -50 80 -56 q74 -4 108 34 q9 11 2 24 l-7 14 q-92 -19 -183 -8z" tabindex="0" role="button" aria-label="Tank: where I work"><title>tank → where I work</title></path>
         <rect class="hot" data-panel="projects" x="305" y="284" width="128" height="44" rx="10" tabindex="0" role="button" aria-label="Engine: things I built"><title>engine → things I built</title></rect>
         <rect class="hot" data-panel="teams" x="182" y="232" width="120" height="34" rx="10" tabindex="0" role="button" aria-label="Pillion seat: teams I led"><title>pillion seat → teams &amp; stalls</title></rect>
-        <circle class="hot" data-panel="contact" cx="502" cy="193" r="32" tabindex="0" role="button" aria-label="Headlight: Say Hi"><title>headlight → Say Hi</title></circle>
+        <circle class="hot" data-panel="contact" cx="502" cy="193" r="32" tabindex="0" role="button" aria-label="Headlight: Say Hii!"><title>headlight → Say Hii!</title></circle>
       </g>
     </svg>
     <div class="road"></div>
@@ -392,23 +390,23 @@
       <button class="nchip pink" data-panel="about">About me</button>
       <button class="nchip peach" data-panel="work">Where I work</button>
       <button class="nchip blue" data-panel="projects">Things I built</button>
-      <a class="nchip doc" href="https://docs.google.com/document/d/11MHsBDrLg7mejijW0InReReRcFSLMHuNR7eIV4lGGZw/edit?usp=sharing" target="_blank" rel="noopener">ATS-friendly resume</a>
+      <a class="nchip doc" href="https://docs.google.com/document/d/11MHsBDrLg7mejijW0InReReRcFSLMHuNR7eIV4lGGZw/edit?usp=sharing" target="_blank" rel="noopener">ATS-friendly Resume</a>
       <button class="nchip yellow" data-panel="skills">Skills</button>
       <button class="nchip green" data-panel="school">School</button>
       <button class="nchip green" data-panel="college">College</button>
       <button class="nchip yellow" data-panel="teams">Teams &amp; stalls</button>
-      <button class="nchip dark" data-panel="contact">Say Hi</button>
+      <button class="nchip dark" data-panel="contact">Say Hii!</button>
       </div>
       <div class="chip-set" aria-hidden="true">
       <button tabindex="-1" class="nchip pink" data-panel="about">About me</button>
       <button tabindex="-1" class="nchip peach" data-panel="work">Where I work</button>
       <button tabindex="-1" class="nchip blue" data-panel="projects">Things I built</button>
-      <a tabindex="-1" class="nchip doc" href="https://docs.google.com/document/d/11MHsBDrLg7mejijW0InReReRcFSLMHuNR7eIV4lGGZw/edit?usp=sharing" target="_blank" rel="noopener">ATS-friendly resume</a>
+      <a tabindex="-1" class="nchip doc" href="https://docs.google.com/document/d/11MHsBDrLg7mejijW0InReReRcFSLMHuNR7eIV4lGGZw/edit?usp=sharing" target="_blank" rel="noopener">ATS-friendly Resume</a>
       <button tabindex="-1" class="nchip yellow" data-panel="skills">Skills</button>
       <button tabindex="-1" class="nchip green" data-panel="school">School</button>
       <button tabindex="-1" class="nchip green" data-panel="college">College</button>
       <button tabindex="-1" class="nchip yellow" data-panel="teams">Teams &amp; stalls</button>
-      <button tabindex="-1" class="nchip dark" data-panel="contact">Say Hi</button>
+      <button tabindex="-1" class="nchip dark" data-panel="contact">Say Hii!</button>
       </div>
     </div>
   </div>
@@ -546,7 +544,7 @@
   </div>
 </div>
 
-<div class="panel" id="panel-contact" role="dialog" aria-modal="true" aria-label="Say Hi">
+<div class="panel" id="panel-contact" role="dialog" aria-modal="true" aria-label="Say Hii!">
   <div class="panel-head"><button class="back-btn">← Back to the ride</button></div>
   <div class="panel-body">
     <div class="k">The headlight — say hi</div>
@@ -558,7 +556,7 @@
       <a href="https://huggingface.co/scrutiniz3r">Hugging Face</a>
       <a href="https://www.linkedin.com/in/abbiraam">LinkedIn</a>
       <a href="https://scrutiniz3r.github.io/days-since/">Days Since</a>
-      <a href="https://docs.google.com/document/d/11MHsBDrLg7mejijW0InReReRcFSLMHuNR7eIV4lGGZw/edit?usp=sharing" target="_blank" rel="noopener">ATS-friendly resume (doc)</a>
+      <a href="https://docs.google.com/document/d/11MHsBDrLg7mejijW0InReReRcFSLMHuNR7eIV4lGGZw/edit?usp=sharing" target="_blank" rel="noopener">ATS-friendly Resume (doc)</a>
     </div>
   </div>
 </div>
