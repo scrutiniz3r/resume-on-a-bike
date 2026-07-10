@@ -77,8 +77,14 @@
   }
   @keyframes roadmove{to{background-position-x:-86px}}
 
-  /* hotspots */
-  .hot{fill:transparent;cursor:pointer;outline:none}
+  /* hotspots: softly outlined so they read as tappable on touch screens */
+  .hot{
+    fill:transparent;cursor:pointer;outline:none;
+    stroke:rgba(192,112,60,.34);stroke-width:2.5;stroke-dasharray:5 8;
+    animation:ants 26s linear infinite;
+  }
+  @keyframes ants{to{stroke-dashoffset:-312}}
+  body.dark .hot{stroke:rgba(217,142,87,.42)}
   .hot:hover,.hot:focus-visible{stroke:var(--terracotta);stroke-width:4;stroke-dasharray:7 7;fill:rgba(192,112,60,.07)}
 
   /* chip nav — a second road: chips roll past like traffic */
@@ -106,6 +112,21 @@
   .nchip.pink{background:#F3E0DC;color:#8A5548;border-color:#E7CCC6}
   .nchip.dark{background:#2E2620;color:#FDF8EE;border-color:#2E2620}
   .nchip.dark:hover{filter:brightness(1.25)}
+  .nchip.doc{
+    position:relative;overflow:hidden;text-decoration:none;display:inline-block;
+    background:linear-gradient(120deg,#E8C15A,#F6DE9B 45%,#D9A93F);
+    color:#4A3608;border-color:#C9A244;font-weight:700;
+  }
+  .nchip.doc::after{
+    content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;
+    background:linear-gradient(100deg,transparent,rgba(255,255,255,.8),transparent);
+    animation:shine 3.2s ease-in-out infinite;
+  }
+  @keyframes shine{0%{left:-60%}55%,100%{left:130%}}
+  body.dark .nchip.doc{
+    background:linear-gradient(120deg,#B98F2E,#E3C767 45%,#A87F26);
+    color:#2A1F05;border-color:#8F6D1F;
+  }
 
   .foot-note{position:absolute;bottom:14px;left:0;right:0;text-align:center;font-size:11.5px;color:var(--dim)}
 
@@ -205,6 +226,9 @@
   @keyframes beamflk{0%,100%{opacity:1}50%{opacity:.85}}
   body.dark .lens-bright{fill:#FFF3C0}
   body.dark .bike-svg{filter:brightness(1.32)}
+  body.dark .pack-body{fill:#453A2D}
+  body.dark .pack-seam{stroke:#5F5040}
+  body.dark .pack-strap{stroke:#57493A}
   body.dark .road{background:repeating-linear-gradient(90deg,#4A3F31 0 46px,transparent 46px 86px)}
   body.dark .backdrop{background:rgba(0,0,0,.55)}
   body.dark .tile{background:#332B22}
@@ -231,13 +255,15 @@
     .chip-set[aria-hidden]{display:none}
     .chip-road{mask-image:none;-webkit-mask-image:none}
     body.dark .beam{animation:none}
+    .hot{animation:none}
+    .nchip.doc::after{animation:none}
     .mode-btn{transition:none}
   }
 </style>
 </head>
 <body>
 
-<button class="mode-btn" id="modeBtn" type="button" aria-pressed="false">☾ night ride</button>
+<button class="mode-btn" id="modeBtn" type="button" aria-pressed="false">☾ Night ride</button>
 
 <div class="scene">
   <div class="hello">
@@ -326,9 +352,9 @@
       <g id="riderG">
         <!-- backpack (behind torso) -->
         <g id="backpack">
-          <path d="M316 116 q-46 8 -56 56 q-8 44 28 56 q12 4 18 -6 q14 -50 24 -98 q-6 -8 -14 -8z" fill="#171310"/>
-          <path d="M282 160 q-6 26 14 36" stroke="#3B332B" stroke-width="5" fill="none" stroke-linecap="round"/>
-          <path d="M330 122 q-16 34 -12 66" stroke="#26201B" stroke-width="8" fill="none" stroke-linecap="round"/>
+          <path class="pack-body" d="M316 116 q-46 8 -56 56 q-8 44 28 56 q12 4 18 -6 q14 -50 24 -98 q-6 -8 -14 -8z" fill="#171310"/>
+          <path class="pack-seam" d="M282 160 q-6 26 14 36" stroke="#3B332B" stroke-width="5" fill="none" stroke-linecap="round"/>
+          <path class="pack-strap" d="M330 122 q-16 34 -12 66" stroke="#26201B" stroke-width="8" fill="none" stroke-linecap="round"/>
         </g>
         <!-- rear leg -->
         <path d="M330 205 q30 34 24 66 l-16 34 q-4 10 8 14 q10 2 14 -8 l22 -44 q6 -44 -18 -70z" fill="#26201B"/>
@@ -347,14 +373,14 @@
       </g>
       <!-- hotspots -->
       <g id="hotspots">
-        <circle class="hot" data-panel="about" cx="286" cy="172" r="66" tabindex="0" role="button" aria-label="The backpack: about me"><title>the backpack → about me</title></circle>
+        <path class="hot" data-panel="about" d="M318 108 q-54 8 -65 62 q-9 52 33 65 q17 5 24 -8 q16 -54 26 -107 q-7 -10 -18 -12z" tabindex="0" role="button" aria-label="The backpack: about me"><title>the backpack → about me</title></path>
         <circle class="hot" data-panel="school" cx="185" cy="325" r="84" tabindex="0" role="button" aria-label="Rear wheel: school days"><title>rear wheel → school days</title></circle>
         <circle class="hot" data-panel="college" cx="575" cy="325" r="84" tabindex="0" role="button" aria-label="Front wheel: college"><title>front wheel → college</title></circle>
         <circle class="hot" data-panel="skills" cx="428" cy="112" r="40" tabindex="0" role="button" aria-label="Helmet: skills"><title>helmet → skills</title></circle>
         <path class="hot" data-panel="work" d="M395 186 q60 -6 88 28 l-6 22 q-44 -10 -90 -8z" tabindex="0" role="button" aria-label="Tank: where I work"><title>tank → where I work</title></path>
         <rect class="hot" data-panel="projects" x="305" y="284" width="128" height="44" rx="10" tabindex="0" role="button" aria-label="Engine: things I built"><title>engine → things I built</title></rect>
         <rect class="hot" data-panel="teams" x="182" y="232" width="120" height="34" rx="10" tabindex="0" role="button" aria-label="Pillion seat: teams I led"><title>pillion seat → teams &amp; stalls</title></rect>
-        <circle class="hot" data-panel="contact" cx="502" cy="193" r="32" tabindex="0" role="button" aria-label="Headlight: say hi"><title>headlight → say hi</title></circle>
+        <circle class="hot" data-panel="contact" cx="502" cy="193" r="32" tabindex="0" role="button" aria-label="Headlight: Say Hi"><title>headlight → Say Hi</title></circle>
       </g>
     </svg>
     <div class="road"></div>
@@ -363,24 +389,26 @@
   <div class="chip-road" role="navigation" aria-label="Resume sections">
     <div class="chip-track">
       <div class="chip-set">
-      <button class="nchip pink" data-panel="about">about me</button>
-      <button class="nchip peach" data-panel="work">where I work</button>
-      <button class="nchip blue" data-panel="projects">things I built</button>
-      <button class="nchip yellow" data-panel="skills">skills</button>
-      <button class="nchip green" data-panel="school">school</button>
-      <button class="nchip green" data-panel="college">college</button>
-      <button class="nchip yellow" data-panel="teams">teams &amp; stalls</button>
-      <button class="nchip dark" data-panel="contact">say hi</button>
+      <button class="nchip pink" data-panel="about">About me</button>
+      <button class="nchip peach" data-panel="work">Where I work</button>
+      <button class="nchip blue" data-panel="projects">Things I built</button>
+      <a class="nchip doc" href="https://docs.google.com/document/d/11MHsBDrLg7mejijW0InReReRcFSLMHuNR7eIV4lGGZw/edit?usp=sharing" target="_blank" rel="noopener">ATS-friendly resume</a>
+      <button class="nchip yellow" data-panel="skills">Skills</button>
+      <button class="nchip green" data-panel="school">School</button>
+      <button class="nchip green" data-panel="college">College</button>
+      <button class="nchip yellow" data-panel="teams">Teams &amp; stalls</button>
+      <button class="nchip dark" data-panel="contact">Say Hi</button>
       </div>
       <div class="chip-set" aria-hidden="true">
-      <button tabindex="-1" class="nchip pink" data-panel="about">about me</button>
-      <button tabindex="-1" class="nchip peach" data-panel="work">where I work</button>
-      <button tabindex="-1" class="nchip blue" data-panel="projects">things I built</button>
-      <button tabindex="-1" class="nchip yellow" data-panel="skills">skills</button>
-      <button tabindex="-1" class="nchip green" data-panel="school">school</button>
-      <button tabindex="-1" class="nchip green" data-panel="college">college</button>
-      <button tabindex="-1" class="nchip yellow" data-panel="teams">teams &amp; stalls</button>
-      <button tabindex="-1" class="nchip dark" data-panel="contact">say hi</button>
+      <button tabindex="-1" class="nchip pink" data-panel="about">About me</button>
+      <button tabindex="-1" class="nchip peach" data-panel="work">Where I work</button>
+      <button tabindex="-1" class="nchip blue" data-panel="projects">Things I built</button>
+      <a tabindex="-1" class="nchip doc" href="https://docs.google.com/document/d/11MHsBDrLg7mejijW0InReReRcFSLMHuNR7eIV4lGGZw/edit?usp=sharing" target="_blank" rel="noopener">ATS-friendly resume</a>
+      <button tabindex="-1" class="nchip yellow" data-panel="skills">Skills</button>
+      <button tabindex="-1" class="nchip green" data-panel="school">School</button>
+      <button tabindex="-1" class="nchip green" data-panel="college">College</button>
+      <button tabindex="-1" class="nchip yellow" data-panel="teams">Teams &amp; stalls</button>
+      <button tabindex="-1" class="nchip dark" data-panel="contact">Say Hi</button>
       </div>
     </div>
   </div>
@@ -393,7 +421,7 @@
 <!-- ================= PANELS ================= -->
 
 <div class="panel" id="panel-about" role="dialog" aria-modal="true" aria-label="About me">
-  <div class="panel-head"><button class="back-btn">← back to the ride</button></div>
+  <div class="panel-head"><button class="back-btn">← Back to the ride</button></div>
   <div class="panel-body">
     <div class="k">The backpack — about me</div>
     <p class="quip">Everything I carry.</p>
@@ -415,7 +443,7 @@
 </div>
 
 <div class="panel" id="panel-work" role="dialog" aria-modal="true" aria-label="Where I work">
-  <div class="panel-head"><button class="back-btn">← back to the ride</button></div>
+  <div class="panel-head"><button class="back-btn">← Back to the ride</button></div>
   <div class="panel-body">
     <div class="k">The tank — where I work</div>
     <p class="quip">Three years. Pipelines, on time.</p>
@@ -438,7 +466,7 @@
 </div>
 
 <div class="panel p-blue" id="panel-projects" role="dialog" aria-modal="true" aria-label="Things I built">
-  <div class="panel-head"><button class="back-btn">← back to the ride</button></div>
+  <div class="panel-head"><button class="back-btn">← Back to the ride</button></div>
   <div class="panel-body">
     <div class="k">The engine — things I built</div>
     <p class="quip">One of them listens.</p>
@@ -465,7 +493,7 @@
 </div>
 
 <div class="panel p-gold" id="panel-skills" role="dialog" aria-modal="true" aria-label="Skills">
-  <div class="panel-head"><button class="back-btn">← back to the ride</button></div>
+  <div class="panel-head"><button class="back-btn">← Back to the ride</button></div>
   <div class="panel-body">
     <div class="k">The helmet — skills</div>
     <p class="quip">This is what's inside it.</p>
@@ -481,7 +509,7 @@
 </div>
 
 <div class="panel p-green" id="panel-school" role="dialog" aria-modal="true" aria-label="School days">
-  <div class="panel-head"><button class="back-btn">← back to the ride</button></div>
+  <div class="panel-head"><button class="back-btn">← Back to the ride</button></div>
   <div class="panel-body">
     <div class="k">The rear wheel — school days</div>
     <p class="quip">Where it all started.</p>
@@ -491,7 +519,7 @@
 </div>
 
 <div class="panel p-green" id="panel-college" role="dialog" aria-modal="true" aria-label="College">
-  <div class="panel-head"><button class="back-btn">← back to the ride</button></div>
+  <div class="panel-head"><button class="back-btn">← Back to the ride</button></div>
   <div class="panel-body">
     <div class="k">The front wheel — college</div>
     <p class="quip">Where it was headed.</p>
@@ -500,7 +528,7 @@
 </div>
 
 <div class="panel p-gold" id="panel-teams" role="dialog" aria-modal="true" aria-label="Teams and stalls">
-  <div class="panel-head"><button class="back-btn">← back to the ride</button></div>
+  <div class="panel-head"><button class="back-btn">← Back to the ride</button></div>
   <div class="panel-body">
     <div class="k">The pillion seat — teams, stages &amp; stalls</div>
     <p class="quip">Riding pillion: every team I've led.</p>
@@ -518,18 +546,19 @@
   </div>
 </div>
 
-<div class="panel" id="panel-contact" role="dialog" aria-modal="true" aria-label="Say hi">
-  <div class="panel-head"><button class="back-btn">← back to the ride</button></div>
+<div class="panel" id="panel-contact" role="dialog" aria-modal="true" aria-label="Say Hi">
+  <div class="panel-head"><button class="back-btn">← Back to the ride</button></div>
   <div class="panel-body">
     <div class="k">The headlight — say hi</div>
     <p class="quip">It's pointing at you.</p>
     <p class="lead">If you'd like to talk about a role or a project, write to <em class="c-terracotta">abbiraam2001@gmail.com</em>.</p>
     <div class="contact-links">
-      <a href="mailto:abbiraam2001@gmail.com">email</a>
-      <a href="https://github.com/scrutiniz3r">github</a>
-      <a href="https://huggingface.co/scrutiniz3r">hugging face</a>
-      <a href="https://www.linkedin.com/in/abbiraam">linkedin</a>
-      <a href="https://scrutiniz3r.github.io/days-since/">days since</a>
+      <a href="mailto:abbiraam2001@gmail.com">Email</a>
+      <a href="https://github.com/scrutiniz3r">GitHub</a>
+      <a href="https://huggingface.co/scrutiniz3r">Hugging Face</a>
+      <a href="https://www.linkedin.com/in/abbiraam">LinkedIn</a>
+      <a href="https://scrutiniz3r.github.io/days-since/">Days Since</a>
+      <a href="https://docs.google.com/document/d/11MHsBDrLg7mejijW0InReReRcFSLMHuNR7eIV4lGGZw/edit?usp=sharing" target="_blank" rel="noopener">ATS-friendly resume (doc)</a>
     </div>
   </div>
 </div>
@@ -558,13 +587,13 @@
 
   // panel open/close
   var backdrop = document.getElementById('backdrop');
-  var open = null, lastTrigger = null;
+  var open = null, lastTrigger = null, viaKeyboard = false;
 
-  function openPanel(name, trigger){
+  function openPanel(name, trigger, kb){
     var p = document.getElementById('panel-' + name);
     if(!p) return;
     if(open) open.classList.remove('on');
-    open = p; lastTrigger = trigger || null;
+    open = p; lastTrigger = trigger || null; viaKeyboard = !!kb;
     p.classList.add('on');
     backdrop.classList.add('on');
     var btn = p.querySelector('.back-btn');
@@ -574,14 +603,18 @@
     if(!open) return;
     open.classList.remove('on');
     backdrop.classList.remove('on');
-    if(lastTrigger && lastTrigger.focus) lastTrigger.focus();
-    open = null; lastTrigger = null;
+    if(viaKeyboard && lastTrigger && lastTrigger.focus){
+      lastTrigger.focus();
+    } else if(document.activeElement && document.activeElement.blur){
+      document.activeElement.blur(); // let the chip road roll again
+    }
+    open = null; lastTrigger = null; viaKeyboard = false;
   }
 
   document.querySelectorAll('[data-panel]').forEach(function(el){
-    function go(e){ e.preventDefault(); e.stopPropagation(); openPanel(el.dataset.panel, el); }
-    el.addEventListener('click', go);
-    el.addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' ') go(e); });
+    function go(e, kb){ e.preventDefault(); e.stopPropagation(); openPanel(el.dataset.panel, el, kb); }
+    el.addEventListener('click', function(e){ go(e, e.detail === 0); });
+    el.addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' ') go(e, true); });
   });
   document.querySelectorAll('.back-btn').forEach(function(b){
     b.addEventListener('click', closePanel);
@@ -593,7 +626,7 @@
   var modeBtn = document.getElementById('modeBtn');
   function setMode(dark){
     document.body.classList.toggle('dark', dark);
-    modeBtn.textContent = dark ? '\u2600 day ride' : '\u263e night ride';
+    modeBtn.textContent = dark ? '\u2600 Day ride' : '\u263e Night ride';
     modeBtn.setAttribute('aria-pressed', String(dark));
   }
   setMode(window.matchMedia('(prefers-color-scheme: dark)').matches);
