@@ -211,15 +211,15 @@
   .panel.p-green{border-top-color:var(--green)}
   .panel.p-blue{border-top-color:var(--blue)}
   .panel.p-gold{border-top-color:var(--gold)}
-  .panel-head{padding:16px 22px 0;flex:none}
+  .panel-head{position:absolute;bottom:14px;right:16px;z-index:2;padding:0}
   .back-btn{
-    font-family:var(--font-body);font-weight:600;font-size:12.5px;
-    background:none;border:1px solid var(--line);color:var(--brown);
-    padding:7px 14px;border-radius:99px;cursor:pointer;
+    font-family:var(--font-body);font-weight:600;font-size:13px;
+    background:var(--card);border:1.5px solid var(--line);color:var(--brown);
+    padding:10px 18px;border-radius:99px;cursor:pointer;box-shadow:var(--shadow);
   }
   .back-btn:hover{color:var(--ink);border-color:var(--dim)}
   .back-btn:focus-visible{outline:2px solid var(--terracotta);outline-offset:2px}
-  .panel-body{padding:14px 24px 26px;overflow-y:auto}
+  .panel-body{padding:20px 24px 64px;overflow-y:auto}
   .panel-body .k{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);font-weight:600;margin-bottom:6px}
   .panel-body h2{font-family:var(--font-display);font-weight:600;font-size:23px;letter-spacing:-.01em}
   .panel-body h2 em{font-style:italic;font-weight:500}
@@ -302,8 +302,16 @@
   body.dark .nchip.pink,body.dark .chip.pink{background:#3E2C28;color:#E4B7AC;border-color:#523B36}
   body.dark .nchip.dark{background:#F1E9DC;color:#2E2620;border-color:#F1E9DC}
 
+  @media (max-height:900px){
+    .hello h1{font-size:clamp(28px,4.4vw,46px)}
+    .bike-wrap{width:min(86vw,640px)}
+    .scene{gap:clamp(8px,1.8vh,18px);padding-bottom:clamp(52px,8vh,90px)}
+  }
   @media (max-width:640px){
-    .hello p{font-size:12.5px}
+    .bike-wrap{width:97vw}
+    .bike-svg{transform:scale(1.15);transform-origin:50% 100%}
+    .chip-road.asphalt{margin-top:-2.2%}
+    .hello p{font-size:15px}
     .panel{width:94vw;max-height:88svh}
     .tiles{grid-template-columns:1fr}
   }
@@ -713,6 +721,9 @@
     function go(e, kb){ e.preventDefault(); e.stopPropagation(); openPanel(el.dataset.panel, el, kb); }
     el.addEventListener('click', function(e){ go(e, e.detail === 0); });
     el.addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' ') go(e, true); });
+  });
+  document.querySelectorAll('.nchip.doc').forEach(function(a){
+    a.addEventListener('click', function(){ setTimeout(function(){ a.blur(); }, 0); });
   });
   document.querySelectorAll('.back-btn').forEach(function(b){
     b.addEventListener('click', closePanel);
