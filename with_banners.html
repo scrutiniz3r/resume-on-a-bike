@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F8F1E3">
+<title>Abbiraam</title>
+<meta name="description" content="Abbiraam — engineer at Tata Elxsi, building toward machine learning. ECE from SCTCE, ex-ISRO intern. Tap the bike.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --font-display:"Playfair Display",Georgia,serif;
+    --font-body:"Inter",system-ui,sans-serif;
+    --bg:#F8F1E3;
+    --card:#FFFFFF;
+    --ink:#4C4036;
+    --dim:#A89B8B;
+    --line:#EADFCD;
+    --terracotta:#C0703C;
+    --green:#6F8F52;
+    --blue:#7C93B5;
+    --gold:#C2A03F;
+    --brown:#93806E;
+    --shadow:0 3px 14px rgba(93,70,45,.09);
+    --shadow-big:0 14px 44px rgba(93,70,45,.18);
+    --radius:18px;
+  }
+  body.dark{
+    --bg:#1E1913;
+    --card:#2A231C;
+    --ink:#F1E9DC;
+    --dim:#9B8F80;
+    --line:#3A3129;
+    --terracotta:#D98E57;
+    --green:#8FAF6E;
+    --blue:#93AACC;
+    --gold:#D4B45C;
+    --brown:#B7A896;
+    --shadow:0 3px 14px rgba(0,0,0,.35);
+    --shadow-big:0 14px 44px rgba(0,0,0,.5);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    transition:background .5s ease,color .5s ease;
+    background:var(--bg);color:var(--ink);
+    font-family:var(--font-body);font-size:16px;line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    min-height:100svh;overflow:hidden;
+  }
+  ::selection{background:var(--terracotta);color:#fff}
+  a{color:inherit}
+
+  /* ================= THE RIDE ================= */
+  .scene{
+    height:100svh;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:clamp(10px,2.4vh,26px);
+    padding:14px 20px clamp(76px,12vh,132px);position:relative;
+  }
+  .hello{text-align:center}
+  .hello h1{font-family:var(--font-display);font-weight:600;font-size:clamp(32px,5.4vw,58px);letter-spacing:-.01em}
+  .hello h1 em{font-style:italic;font-weight:500;color:var(--terracotta)}
+  .hello p{margin-top:8px;font-size:clamp(16px,2.05vw,18.5px);color:var(--brown);max-width:56ch}
+  .hello p b{color:var(--ink)}
+  .hello p.hello-sub{margin-top:10px}
+
+  .bike-wrap{width:min(92vw,760px);position:relative;padding-top:clamp(110px,20vh,200px)}
+  .bike-svg{width:min(86%,640px);height:auto;display:block;margin:clamp(30px,9vh,90px) auto 0}
+  @keyframes ride{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+  #bikeG,#riderG{animation:ride 1.1s ease-in-out infinite}
+  .spokes{animation:spin 1.4s linear infinite;transform-box:fill-box;transform-origin:center}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* ---------- roadside billboards (life in passing) ---------- */
+  .billboards{
+    position:absolute;left:0;right:0;top:clamp(22px,4vh,40px);bottom:14px;z-index:0;overflow:hidden;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);
+    mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);
+    pointer-events:none;
+  }
+  .bike-svg,.chip-road.asphalt{position:relative;z-index:1}
+  .bb-track{display:flex;width:max-content;height:100%;align-items:stretch;animation:bbroll 40s linear infinite}
+  .bb-set{display:flex;gap:150px;padding-right:150px;align-items:stretch}
+  @keyframes bbroll{to{transform:translateX(-50%)}}
+  .bb{display:flex;flex-direction:column;align-items:center;height:100%}
+  .board{
+    width:clamp(195px,27vw,245px);background:var(--card);border-radius:12px;box-shadow:var(--shadow);
+    padding:7px;position:relative;flex:none;
+    transform:perspective(700px) rotateY(-13deg);
+  }
+  /* lamp fixture across the top of each hoarding */
+  .lampbar{height:6px;background:#E4DAC6;border-radius:99px;margin:1px 4px 9px;position:relative;z-index:2}
+  .lampbar i{
+    position:absolute;top:5px;width:12px;height:8px;
+    background:#C9BCA6;border-radius:0 0 5px 5px;left:20%;
+  }
+  .lampbar i + i{left:auto;right:20%}
+  body.dark .lampbar{background:#5C5248}
+  body.dark .lampbar i{background:#FFE9A8;box-shadow:0 0 9px rgba(255,233,168,.85)}
+  body.dark .lampbar i::after{
+    content:"";position:absolute;top:7px;left:50%;transform:translateX(-50%);
+    width:120px;height:clamp(85px,12vh,115px);pointer-events:none;
+    background:radial-gradient(ellipse 55% 100% at 50% 0%,rgba(255,233,168,.38),transparent 75%);
+  }
+  .board img{width:100%;height:clamp(100px,14vh,128px);object-fit:cover;border-radius:8px;display:block}
+  .board .ph{
+    display:none;height:clamp(100px,14vh,128px);border-radius:8px;background:#F1E8D6;
+    font-size:42px;text-align:center;line-height:clamp(100px,14vh,128px);
+  }
+  .board.no-img img{display:none}
+  .board.no-img .ph{display:block}
+  .board .cap{
+    font-family:var(--font-display);font-style:italic;font-weight:500;
+    font-size:14px;color:var(--brown);text-align:center;padding:5px 2px 2px;
+  }
+  .pole{width:8px;flex:1;min-height:70px;background:#93806E;border-radius:0 0 3px 3px}
+  body.dark .board img{filter:brightness(.88)}
+  body.dark .board .ph{background:#3A3129}
+  body.dark .pole{background:#57493A}
+
+  /* hotspots: softly outlined so they read as tappable on touch screens */
+  .hot{
+    fill:transparent;cursor:pointer;outline:none;
+    stroke:rgba(192,112,60,.34);stroke-width:2.5;stroke-dasharray:5 8;
+    animation:ants 26s linear infinite;
+  }
+  @keyframes ants{to{stroke-dashoffset:-312}}
+  body.dark .hot{stroke:rgba(217,142,87,.42)}
+  .hot:hover,.hot:focus-visible{stroke:var(--terracotta);stroke-width:4;stroke-dasharray:7 7;fill:rgba(192,112,60,.07)}
+
+  /* chip nav — a second road: chips roll past like traffic */
+  .chip-road.asphalt{
+    margin-top:-26px;height:60px;border-radius:14px;
+    background:#4A4038;border-top:3px solid #5C5248;
+    box-shadow:inset 0 6px 14px rgba(0,0,0,.18);
+  }
+  body.dark .chip-road.asphalt{background:#242019;border-top-color:#33291F}
+  .asphalt .chip-track{align-items:center;height:100%}
+  .asphalt .chip-set{gap:22px;padding-right:22px;align-items:center}
+  .dash{width:34px;height:6px;border-radius:3px;background:#EFE6D2;opacity:.75;flex:none;align-self:center}
+  body.dark .dash{background:#E8DDC4;opacity:.85}
+  .asphalt .nchip{
+    background:#F5F1E8;color:#4C4036;border:none;border-radius:8px;
+    padding:9px 26px;font-weight:600;white-space:nowrap;
+  }
+  .asphalt .nchip:hover{filter:brightness(1.06)}
+  .asphalt .nchip.dark{background:#DFA173;color:#4A2A12}
+  body.dark .asphalt .nchip{background:#D9D2C4;color:#33291F}
+  body.dark .asphalt .nchip.dark{background:#D98E57;color:#33200D}
+
+  .chip-road{
+    width:min(92vw,760px);overflow:hidden;padding:6px 0;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);
+    mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);
+  }
+  .chip-track{display:flex;width:max-content;animation:chipsroll 28s linear infinite}
+  .chip-road:hover .chip-track,
+  .chip-road:focus-within .chip-track{animation-play-state:paused}
+  .chip-set{display:flex;gap:10px;padding-right:10px}
+  @keyframes chipsroll{to{transform:translateX(-50%)}}
+  .nchip{
+    font-family:var(--font-body);font-weight:600;font-size:13.5px;
+    padding:9px 18px;border-radius:99px;cursor:pointer;border:1.5px solid transparent;
+    transition:filter .15s;
+  }
+  .nchip:hover{filter:brightness(.96)}
+  .nchip:focus-visible{outline:2px solid var(--terracotta);outline-offset:2px}
+  .nchip.peach{background:#FBE3CF;color:#9A5B2B;border-color:#F2D2B4}
+  .nchip.yellow{background:#FCEEC9;color:#8F7420;border-color:#F1DFA6}
+  .nchip.green{background:#DFEBD4;color:#4F6E38;border-color:#CCDFBB}
+  .nchip.blue{background:#DAE5F2;color:#47618A;border-color:#C4D4E8}
+  .nchip.pink{background:#F3E0DC;color:#8A5548;border-color:#E7CCC6}
+  .nchip.dark{background:#2E2620;color:#FDF8EE;border-color:#2E2620}
+  .nchip.dark:hover{filter:brightness(1.25)}
+  .nchip.doc{
+    position:relative;overflow:hidden;text-decoration:none;display:inline-block;
+    background:linear-gradient(120deg,#E8C15A,#F6DE9B 45%,#D9A93F);
+    color:#4A3608;border-color:#C9A244;font-weight:700;
+  }
+  .nchip.doc::after{
+    content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;
+    background:linear-gradient(100deg,transparent,rgba(255,255,255,.8),transparent);
+    animation:shine 3.2s ease-in-out infinite;
+  }
+  @keyframes shine{0%{left:-60%}55%,100%{left:130%}}
+  body.dark .nchip.doc{
+    background:linear-gradient(120deg,#B98F2E,#E3C767 45%,#A87F26);
+    color:#2A1F05;border-color:#8F6D1F;
+  }
+
+  .foot-note{position:absolute;bottom:14px;left:0;right:0;text-align:center;font-size:11.5px;color:var(--dim)}
+
+  /* ================= PANELS ================= */
+  .backdrop{
+    position:fixed;inset:0;z-index:90;background:rgba(76,64,54,.32);
+    opacity:0;pointer-events:none;transition:opacity .3s ease;
+  }
+  .backdrop.on{opacity:1;pointer-events:auto}
+  .panel{
+    position:fixed;z-index:95;left:50%;top:50%;
+    transform:translate(-50%,-46%) scale(.96);
+    width:min(92vw,620px);max-height:84svh;
+    background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow-big);
+    border-top:6px solid var(--terracotta);
+    display:flex;flex-direction:column;
+    opacity:0;pointer-events:none;
+    transition:opacity .3s ease,transform .3s ease;
+  }
+  .panel.on{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1)}
+  .panel.p-green{border-top-color:var(--green)}
+  .panel.p-blue{border-top-color:var(--blue)}
+  .panel.p-gold{border-top-color:var(--gold)}
+  .panel-head{padding:16px 22px 0;flex:none}
+  .back-btn{
+    font-family:var(--font-body);font-weight:600;font-size:12.5px;
+    background:none;border:1px solid var(--line);color:var(--brown);
+    padding:7px 14px;border-radius:99px;cursor:pointer;
+  }
+  .back-btn:hover{color:var(--ink);border-color:var(--dim)}
+  .back-btn:focus-visible{outline:2px solid var(--terracotta);outline-offset:2px}
+  .panel-body{padding:14px 24px 26px;overflow-y:auto}
+  .panel-body .k{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);font-weight:600;margin-bottom:6px}
+  .panel-body h2{font-family:var(--font-display);font-weight:600;font-size:23px;letter-spacing:-.01em}
+  .panel-body h2 em{font-style:italic;font-weight:500}
+  .panel-body h2 a{color:inherit;text-decoration:none;border-bottom:2px solid currentColor}
+  .panel-body h3{font-family:var(--font-display);font-weight:600;font-size:18px;margin-top:18px}
+  .panel-body h3 em{font-style:italic;font-weight:500}
+  .panel-body h3 a{color:inherit;text-decoration:none;border-bottom:2px solid currentColor}
+  .quip{font-family:var(--font-display);font-style:italic;font-weight:500;font-size:15.5px;color:var(--terracotta);margin:4px 0 12px}
+  .p-green .quip{color:var(--green)}
+  .p-blue .quip{color:var(--blue)}
+  .p-gold .quip{color:var(--gold)}
+  .panel-body .where{color:var(--dim);font-size:13.5px;margin:2px 0 8px}
+  .panel-body ul{list-style:none;display:grid;gap:7px;color:#6B5D4F;font-size:14.5px}
+  .panel-body li{padding-left:16px;position:relative}
+  .panel-body li::before{content:"—";position:absolute;left:0;color:var(--dim)}
+  .panel-body p{color:#6B5D4F;font-size:14.5px;margin-bottom:10px}
+  .panel-body p:last-child{margin-bottom:0}
+  .panel-body p em,.panel-body .lead em{font-family:var(--font-display);font-style:italic;font-weight:500;font-size:1.05em}
+  .c-terracotta{color:var(--terracotta)}
+  .c-green{color:var(--green)}
+  .c-blue{color:var(--blue)}
+  .c-gold{color:var(--gold)}
+  .lead{font-family:var(--font-display);font-weight:600;font-size:18px;line-height:1.5;color:var(--ink)}
+  .lead + .lead{margin-top:.6em}
+
+  .chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+  .chip{font-size:11.5px;font-weight:600;padding:4px 10px;border-radius:99px;border:1px solid transparent}
+  .chip.peach{background:#FBE3CF;color:#9A5B2B;border-color:#F2D2B4}
+  .chip.yellow{background:#FCEEC9;color:#8F7420;border-color:#F1DFA6}
+  .chip.green{background:#DFEBD4;color:#4F6E38;border-color:#CCDFBB}
+  .chip.blue{background:#DAE5F2;color:#47618A;border-color:#C4D4E8}
+  .chip.pink{background:#F3E0DC;color:#8A5548;border-color:#E7CCC6}
+
+  .tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+  .tile{background:#FBF6EA;border-radius:12px;padding:14px 16px;border-top:4px solid var(--terracotta)}
+  .tile.t-green{border-top-color:var(--green)}
+  .tile .num{font-family:var(--font-display);font-weight:700;font-size:30px;line-height:1.05;color:var(--brown)}
+  .tile.t-green .num{color:var(--green)}
+  .tile .since{font-size:10.5px;color:var(--dim);letter-spacing:.04em;margin:2px 0 3px}
+  .tile .what{font-family:var(--font-display);font-style:italic;font-weight:500;font-size:14.5px;color:var(--terracotta)}
+  .tile.t-green .what{color:var(--green)}
+
+  .role-list .row{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}
+  .role-list .row:last-child{border-bottom:none}
+  .role-list .r{font-weight:600}
+  .role-list .o{color:var(--dim);font-size:13px}
+
+  .contact-links{display:flex;gap:20px;flex-wrap:wrap;font-size:14px;font-weight:600;margin-top:16px}
+  .contact-links a{color:var(--brown);text-decoration:none;border-bottom:1px dotted var(--brown);padding-bottom:2px}
+  .contact-links a:hover{color:var(--ink)}
+
+  /* ---------- night ride ---------- */
+  .mode-btn{
+    position:fixed;top:16px;right:18px;z-index:80;
+    font-family:var(--font-body);font-weight:600;font-size:13px;
+    background:var(--card);border:1.5px solid var(--line);color:var(--brown);
+    padding:8px 16px;border-radius:99px;cursor:pointer;box-shadow:var(--shadow);
+    transition:background .5s,color .5s,border-color .5s;
+  }
+  .mode-btn:hover{color:var(--ink)}
+  .mode-btn:focus-visible{outline:2px solid var(--terracotta);outline-offset:2px}
+
+  .beam{opacity:0;transition:opacity .8s ease}
+  body.dark .beam{opacity:1;animation:beamflk 4s ease-in-out infinite}
+  @keyframes beamflk{0%,100%{opacity:1}50%{opacity:.85}}
+  body.dark .lens-bright{fill:#FFF3C0}
+  body.dark .bike-svg{filter:brightness(1.32)}
+  body.dark .pack-body{fill:#453A2D}
+  body.dark .pack-seam{stroke:#5F5040}
+  body.dark .pack-strap{stroke:#57493A}
+  body.dark .backdrop{background:rgba(0,0,0,.55)}
+  body.dark .tile{background:#332B22}
+  body.dark .panel-body p,body.dark .panel-body ul{color:#CBBFAF}
+  body.dark .lead{color:var(--ink)}
+
+  body.dark .nchip.peach,body.dark .chip.peach{background:#43301F;color:#F0BE8E;border-color:#57402A}
+  body.dark .nchip.yellow,body.dark .chip.yellow{background:#3F3517;color:#EBD48A;border-color:#544823}
+  body.dark .nchip.green,body.dark .chip.green{background:#2C3A24;color:#B7D3A1;border-color:#3C4E31}
+  body.dark .nchip.blue,body.dark .chip.blue{background:#28323F;color:#AFC5E0;border-color:#374559}
+  body.dark .nchip.pink,body.dark .chip.pink{background:#3E2C28;color:#E4B7AC;border-color:#523B36}
+  body.dark .nchip.dark{background:#F1E9DC;color:#2E2620;border-color:#F1E9DC}
+
+  @media (max-height:800px){
+    .bike-wrap{width:min(86vw,640px);padding-top:clamp(90px,16vh,150px)}
+  }
+  @media (max-width:640px){
+    .hello p{font-size:12.5px}
+    .panel{width:94vw;max-height:88svh}
+    .tiles{grid-template-columns:1fr}
+  }
+  @media (prefers-reduced-motion:reduce){
+    #bikeG,#riderG,.spokes{animation:none}
+    .panel,.backdrop{transition:none}
+    .chip-track{animation:none;width:auto;flex-wrap:wrap;justify-content:center}
+    .chip-set{flex-wrap:wrap;justify-content:center}
+    .chip-set[aria-hidden]{display:none}
+    .chip-road{mask-image:none;-webkit-mask-image:none}
+    body.dark .beam{animation:none}
+    .hot{animation:none}
+    .nchip.doc::after{animation:none}
+    .bb-track{animation:none}
+    .bb-set + .bb-set{display:none}
+    .billboards{mask-image:none;-webkit-mask-image:none}
+    .mode-btn{transition:none}
+  }
+</style>
+</head>
+<body>
+
+<button class="mode-btn" id="modeBtn" type="button" aria-pressed="false">☾ Night ride</button>
+
+<div class="scene">
+  <div class="hello">
+    <h1>Hello! I'm <em>Abbiraam</em>.</h1>
+    <p>I see you caught me during my daily commute — ah well! No worries as I have secretly integrated my resume into various parts of my bike!</p>
+    <p class="hello-sub">But yes, for those who want to cut to the chase — I've added my ATS-friendly resume down the road, literally!</p>
+  </div>
+
+  <div class="bike-wrap">
+    <div class="billboards" aria-hidden="true">
+      <div class="bb-track">
+      <div class="bb-set">
+        <div class="bb"><div class="board b-green"><div class="lampbar"><i></i><i></i></div><img src="images/school.jpg" alt="School days" loading="lazy" onerror="this.closest('.board').classList.add('no-img')"><div class="ph">🏫</div><div class="cap">School days</div></div><div class="pole"></div></div>
+        <div class="bb"><div class="board b-green"><div class="lampbar"><i></i><i></i></div><img src="images/college.jpg" alt="College at SCTCE" loading="lazy" onerror="this.closest('.board').classList.add('no-img')"><div class="ph">🎓</div><div class="cap">SCTCE</div></div><div class="pole"></div></div>
+        <div class="bb"><div class="board b-peach"><div class="lampbar"><i></i><i></i></div><img src="images/isro.jpg" alt="ISRO internship" loading="lazy" onerror="this.closest('.board').classList.add('no-img')"><div class="ph">🚀</div><div class="cap">ISRO winter</div></div><div class="pole"></div></div>
+        <div class="bb"><div class="board b-peach"><div class="lampbar"><i></i><i></i></div><img src="images/work.jpg" alt="Tata Elxsi" loading="lazy" onerror="this.closest('.board').classList.add('no-img')"><div class="ph">💼</div><div class="cap">Tata Elxsi</div></div><div class="pole"></div></div>
+        <div class="bb"><div class="board b-gold"><div class="lampbar"><i></i><i></i></div><img src="images/bebobear.jpg" alt="Bebo-bear stall" loading="lazy" onerror="this.closest('.board').classList.add('no-img')"><div class="ph">🧸</div><div class="cap">Bebo-bear fests</div></div><div class="pole"></div></div>
+        <div class="bb"><div class="board b-blue"><div class="lampbar"><i></i><i></i></div><img src="images/ride.jpg" alt="On the road" loading="lazy" onerror="this.closest('.board').classList.add('no-img')"><div class="ph">🏍️</div><div class="cap">The ride</div></div><div class="pole"></div></div>
+        <div class="bb"><div class="board b-blue"><div class="lampbar"><i></i><i></i></div><img src="images/hobbies.jpg" alt="Hobbies" loading="lazy" onerror="this.closest('.board').classList.add('no-img')"><div class="ph">🎨</div><div class="cap">Hobbies</div></div><div class="pole"></div></div>
+      </div>
+      <div class="bb-set">
+        <div class="bb"><div class="board b-green"><div class="lampbar"><i></i><i></i></div><img src="images/school.jpg" alt="School days" loading="lazy" onerror="this.closest('.board').classList.add('no-img')"><div class="ph">🏫</div><div class="cap">School days</div></div><div class="pole"></div></div>
+        <div class="bb"><div class="board b-green"><div class="lampbar"><i></i><i></i></div><img src="images/college.jpg" alt="College at SCTCE" loading="lazy" onerror="this.closest('.board').classList.add('no-img')"><div class="ph">🎓</div><div class="cap">SCTCE</div></div><div class="pole"></div></div>
+        <div class="bb"><div class="board b-peach"><div class="lampbar"><i></i><i></i></div><img src="images/isro.jpg" alt="ISRO internship" loading="lazy" onerror="this.closest('.board').classList.add('no-img')"><div class="ph">🚀</div><div class="cap">ISRO winter</div></div><div class="pole"></div></div>
+        <div class="bb"><div class="board b-peach"><div class="lampbar"><i></i><i></i></div><img src="images/work.jpg" alt="Tata Elxsi" loading="lazy" onerror="this.closest('.board').classList.add('no-img')"><div class="ph">💼</div><div class="cap">Tata Elxsi</div></div><div class="pole"></div></div>
+        <div class="bb"><div class="board b-gold"><div class="lampbar"><i></i><i></i></div><img src="images/bebobear.jpg" alt="Bebo-bear stall" loading="lazy" onerror="this.closest('.board').classList.add('no-img')"><div class="ph">🧸</div><div class="cap">Bebo-bear fests</div></div><div class="pole"></div></div>
+        <div class="bb"><div class="board b-blue"><div class="lampbar"><i></i><i></i></div><img src="images/ride.jpg" alt="On the road" loading="lazy" onerror="this.closest('.board').classList.add('no-img')"><div class="ph">🏍️</div><div class="cap">The ride</div></div><div class="pole"></div></div>
+        <div class="bb"><div class="board b-blue"><div class="lampbar"><i></i><i></i></div><img src="images/hobbies.jpg" alt="Hobbies" loading="lazy" onerror="this.closest('.board').classList.add('no-img')"><div class="ph">🎨</div><div class="cap">Hobbies</div></div><div class="pole"></div></div>
+      </div>
+      </div>
+    </div>
+    <svg class="bike-svg" viewBox="0 0 760 430" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Illustration of Abbiraam riding his motorcycle. Parts of the bike open resume sections.">
+      <defs>
+        <linearGradient id="beamGrad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#FFE9A8" stop-opacity=".55"/>
+          <stop offset="1" stop-color="#FFE9A8" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <g id="bikeG">
+        <!-- rear wheel -->
+        <g>
+          <circle cx="185" cy="325" r="80" fill="#26201B"/>
+          <circle cx="185" cy="325" r="52" fill="#3B332B"/>
+          <g class="spokes" stroke="#8C8177" stroke-width="5">
+            <line x1="185" y1="281" x2="185" y2="369"/>
+            <line x1="141" y1="325" x2="229" y2="325"/>
+            <line x1="154" y1="294" x2="216" y2="356"/>
+            <line x1="216" y1="294" x2="154" y2="356"/>
+          </g>
+          <circle cx="185" cy="325" r="12" fill="#26201B"/>
+        </g>
+        <!-- front wheel -->
+        <g>
+          <circle cx="575" cy="325" r="80" fill="#26201B"/>
+          <circle cx="575" cy="325" r="52" fill="#3B332B"/>
+          <g class="spokes" stroke="#8C8177" stroke-width="5">
+            <line x1="575" y1="281" x2="575" y2="369"/>
+            <line x1="531" y1="325" x2="619" y2="325"/>
+            <line x1="544" y1="294" x2="606" y2="356"/>
+            <line x1="606" y1="294" x2="544" y2="356"/>
+          </g>
+          <circle cx="575" cy="325" r="12" fill="#26201B"/>
+        </g>
+        <!-- swingarm -->
+        <path d="M185 320 L340 306 L340 326 L188 336z" fill="#33291F"/>
+        <!-- trellis frame -->
+        <g stroke="#4A4038" stroke-width="7" stroke-linecap="round">
+          <line x1="480" y1="212" x2="345" y2="262"/>
+          <line x1="480" y1="222" x2="410" y2="302"/>
+          <line x1="345" y1="262" x2="330" y2="310"/>
+          <line x1="345" y1="262" x2="410" y2="302"/>
+        </g>
+        <!-- engine block -->
+        <rect x="305" y="258" width="128" height="66" rx="12" fill="#3B332B"/>
+        <g stroke="#26201B" stroke-width="3">
+          <line x1="322" y1="266" x2="322" y2="290"/>
+          <line x1="336" y1="266" x2="336" y2="290"/>
+          <line x1="350" y1="266" x2="350" y2="290"/>
+        </g>
+        <circle cx="402" cy="300" r="16" fill="#5C5248"/>
+        <!-- stubby exhaust -->
+        <path d="M360 322 q60 20 110 10 q14 -3 14 -14 l0 -4 q-2 -8 -12 -6 q-52 10 -106 -4z" fill="#8C8177"/>
+        <ellipse cx="478" cy="322" rx="7" ry="10" fill="#26201B"/>
+        <!-- tail: short flat seat -->
+        <path d="M188 244 q46 -12 118 -8 l52 6 q-4 16 -22 18 l-124 4 q-22 -2 -24 -20z" fill="#26201B"/>
+        <rect x="184" y="246" width="10" height="8" rx="3" fill="#B5443C"/>
+        <!-- tank: white upper with black knee recess -->
+        <path d="M306 236 q6 -44 74 -50 q70 -4 102 32 q8 10 2 22 l-6 12 q-88 -18 -172 -8z" fill="#F5F1E8" stroke="#D8D0C2" stroke-width="2"/>
+        <path d="M330 240 q30 -22 62 -16 l-8 20 q-28 -4 -54 4z" fill="#26201B" opacity=".85"/>
+        <!-- headstock + USD forks -->
+        <path d="M470 212 L560 286" stroke="#33291F" stroke-width="18" stroke-linecap="round"/>
+        <path d="M497 198 L575 325" stroke="#26201B" stroke-width="13" stroke-linecap="round"/>
+        <path d="M509 194 L583 316" stroke="#5C4B3B" stroke-width="7" stroke-linecap="round"/>
+        <!-- headlight beam (visible on night rides) -->
+        <g class="beam">
+          <polygon points="516,181 516,205 760,286 760,100" fill="url(#beamGrad)"/>
+        </g>
+        <!-- round headlight, facing forward -->
+        <circle cx="500" cy="193" r="24" fill="#26201B" stroke="#3B332B" stroke-width="3"/>
+        <ellipse cx="511" cy="193" rx="11" ry="21" fill="#D8D0C2"/>
+        <ellipse cx="514" cy="193" rx="6" ry="13" fill="#FFF8E4" class="lens-bright"/>
+        <!-- handlebar grip -->
+        <path d="M470 190 l16 -10" stroke="#26201B" stroke-width="8" stroke-linecap="round"/>
+      </g>
+      <g id="riderG">
+        <!-- backpack (behind torso) -->
+        <g id="backpack">
+          <path class="pack-body" d="M316 116 q-46 8 -56 56 q-8 44 28 56 q12 4 18 -6 q14 -50 24 -98 q-6 -8 -14 -8z" fill="#171310"/>
+          <path class="pack-seam" d="M282 160 q-6 26 14 36" stroke="#3B332B" stroke-width="5" fill="none" stroke-linecap="round"/>
+          <path class="pack-strap" d="M330 122 q-16 34 -12 66" stroke="#26201B" stroke-width="8" fill="none" stroke-linecap="round"/>
+        </g>
+        <!-- rear leg -->
+        <path d="M330 205 q30 34 24 66 l-16 34 q-4 10 8 14 q10 2 14 -8 l22 -44 q6 -44 -18 -70z" fill="#26201B"/>
+        <path d="M338 316 l30 4 q10 2 8 12 q-2 8 -12 8 l-34 -6z" fill="#171310"/>
+        <!-- torso -->
+        <path d="M312 210 q-4 -58 44 -84 q30 -14 52 6 l24 26 q-18 40 -66 58 q-30 8 -54 -6z" fill="#26201B"/>
+        <!-- reflective stripe -->
+        <path d="M348 132 q26 -12 46 4" stroke="#B8AFA2" stroke-width="6" fill="none" stroke-linecap="round"/>
+        <!-- arm to handlebar -->
+        <path d="M388 148 q56 8 96 34 q10 6 4 16 q-6 8 -16 4 q-40 -22 -92 -30z" fill="#26201B"/>
+        <circle cx="486" cy="192" r="11" fill="#171310"/>
+        <!-- helmet -->
+        <circle cx="428" cy="112" r="34" fill="#F5F1E8" stroke="#D8D0C2" stroke-width="2"/>
+        <path d="M428 96 q26 2 32 22 l-4 14 q-4 10 -16 10 l-14 -2 q6 -22 2 -44z" fill="#26201B"/>
+        <path d="M398 122 q10 16 30 18 l0 8 q-24 0 -34 -18z" fill="#D8D0C2"/>
+      </g>
+      <!-- hotspots -->
+      <g id="hotspots">
+        <path class="hot" data-panel="about" d="M318 108 q-54 8 -65 62 q-9 52 33 65 q17 5 24 -8 q16 -54 26 -107 q-7 -10 -18 -12z" tabindex="0" role="button" aria-label="The backpack: about me"><title>the backpack → about me</title></path>
+        <circle class="hot" data-panel="school" cx="185" cy="325" r="84" tabindex="0" role="button" aria-label="Rear wheel: school days"><title>rear wheel → school days</title></circle>
+        <circle class="hot" data-panel="college" cx="575" cy="325" r="84" tabindex="0" role="button" aria-label="Front wheel: college"><title>front wheel → college</title></circle>
+        <circle class="hot" data-panel="skills" cx="428" cy="112" r="40" tabindex="0" role="button" aria-label="Helmet: skills"><title>helmet → skills</title></circle>
+        <path class="hot" data-panel="work" d="M300 240 q6 -50 80 -56 q74 -4 108 34 q9 11 2 24 l-7 14 q-92 -19 -183 -8z" tabindex="0" role="button" aria-label="Tank: where I work"><title>tank → where I work</title></path>
+        <rect class="hot" data-panel="projects" x="305" y="284" width="128" height="44" rx="10" tabindex="0" role="button" aria-label="Engine: things I built"><title>engine → things I built</title></rect>
+        <rect class="hot" data-panel="teams" x="182" y="232" width="120" height="34" rx="10" tabindex="0" role="button" aria-label="Pillion seat: teams I led"><title>pillion seat → teams &amp; stalls</title></rect>
+        <circle class="hot" data-panel="contact" cx="502" cy="193" r="32" tabindex="0" role="button" aria-label="Headlight: Say Hii!"><title>headlight → Say Hii!</title></circle>
+      </g>
+    </svg>
+  <div class="chip-road asphalt" role="navigation" aria-label="Resume sections">
+    <div class="chip-track">
+      <div class="chip-set">
+      <a class="nchip doc" href="https://docs.google.com/document/d/11MHsBDrLg7mejijW0InReReRcFSLMHuNR7eIV4lGGZw/edit?usp=sharing" target="_blank" rel="noopener">ATS-friendly Resume</a>
+      <span class="dash" aria-hidden="true"></span>
+      <button class="nchip pink" data-panel="about">About me</button>
+      <span class="dash" aria-hidden="true"></span>
+      <button class="nchip peach" data-panel="work">Where I work</button>
+      <span class="dash" aria-hidden="true"></span>
+      <a class="nchip doc" href="https://docs.google.com/document/d/11MHsBDrLg7mejijW0InReReRcFSLMHuNR7eIV4lGGZw/edit?usp=sharing" target="_blank" rel="noopener">ATS-friendly Resume</a>
+      <span class="dash" aria-hidden="true"></span>
+      <button class="nchip blue" data-panel="projects">Things I built</button>
+      <span class="dash" aria-hidden="true"></span>
+      <button class="nchip yellow" data-panel="skills">Skills</button>
+      <span class="dash" aria-hidden="true"></span>
+      <a class="nchip doc" href="https://docs.google.com/document/d/11MHsBDrLg7mejijW0InReReRcFSLMHuNR7eIV4lGGZw/edit?usp=sharing" target="_blank" rel="noopener">ATS-friendly Resume</a>
+      <span class="dash" aria-hidden="true"></span>
+      <button class="nchip green" data-panel="school">School</button>
+      <span class="dash" aria-hidden="true"></span>
+      <button class="nchip green" data-panel="college">College</button>
+      <span class="dash" aria-hidden="true"></span>
+      <a class="nchip doc" href="https://docs.google.com/document/d/11MHsBDrLg7mejijW0InReReRcFSLMHuNR7eIV4lGGZw/edit?usp=sharing" target="_blank" rel="noopener">ATS-friendly Resume</a>
+      <span class="dash" aria-hidden="true"></span>
+      <button class="nchip yellow" data-panel="teams">Teams &amp; stalls</button>
+      <span class="dash" aria-hidden="true"></span>
+      <button class="nchip dark" data-panel="contact">Say Hii!</button>
+      <span class="dash" aria-hidden="true"></span>
+      </div>
+      <div class="chip-set" aria-hidden="true">
+      <a tabindex="-1" class="nchip doc" href="https://docs.google.com/document/d/11MHsBDrLg7mejijW0InReReRcFSLMHuNR7eIV4lGGZw/edit?usp=sharing" target="_blank" rel="noopener">ATS-friendly Resume</a>
+      <span class="dash" aria-hidden="true"></span>
+      <button tabindex="-1" class="nchip pink" data-panel="about">About me</button>
+      <span class="dash" aria-hidden="true"></span>
+      <button tabindex="-1" class="nchip peach" data-panel="work">Where I work</button>
+      <span class="dash" aria-hidden="true"></span>
+      <a tabindex="-1" class="nchip doc" href="https://docs.google.com/document/d/11MHsBDrLg7mejijW0InReReRcFSLMHuNR7eIV4lGGZw/edit?usp=sharing" target="_blank" rel="noopener">ATS-friendly Resume</a>
+      <span class="dash" aria-hidden="true"></span>
+      <button tabindex="-1" class="nchip blue" data-panel="projects">Things I built</button>
+      <span class="dash" aria-hidden="true"></span>
+      <button tabindex="-1" class="nchip yellow" data-panel="skills">Skills</button>
+      <span class="dash" aria-hidden="true"></span>
+      <a tabindex="-1" class="nchip doc" href="https://docs.google.com/document/d/11MHsBDrLg7mejijW0InReReRcFSLMHuNR7eIV4lGGZw/edit?usp=sharing" target="_blank" rel="noopener">ATS-friendly Resume</a>
+      <span class="dash" aria-hidden="true"></span>
+      <button tabindex="-1" class="nchip green" data-panel="school">School</button>
+      <span class="dash" aria-hidden="true"></span>
+      <button tabindex="-1" class="nchip green" data-panel="college">College</button>
+      <span class="dash" aria-hidden="true"></span>
+      <a tabindex="-1" class="nchip doc" href="https://docs.google.com/document/d/11MHsBDrLg7mejijW0InReReRcFSLMHuNR7eIV4lGGZw/edit?usp=sharing" target="_blank" rel="noopener">ATS-friendly Resume</a>
+      <span class="dash" aria-hidden="true"></span>
+      <button tabindex="-1" class="nchip yellow" data-panel="teams">Teams &amp; stalls</button>
+      <span class="dash" aria-hidden="true"></span>
+      <button tabindex="-1" class="nchip dark" data-panel="contact">Say Hii!</button>
+      <span class="dash" aria-hidden="true"></span>
+      </div>
+    </div>
+  </div>
+  </div>
+
+
+  <div class="foot-note">© Abbiraam · Trivandrum, India · yes, that's really my bike</div>
+</div>
+
+<div class="backdrop" id="backdrop"></div>
+
+<!-- ================= PANELS ================= -->
+
+<div class="panel" id="panel-about" role="dialog" aria-modal="true" aria-label="About me">
+  <div class="panel-head"><button class="back-btn">← Back to the ride</button></div>
+  <div class="panel-body">
+    <div class="k">The backpack — about me</div>
+    <p class="quip">Everything I carry.</p>
+    <p class="lead">Three years at <em class="c-terracotta">Tata Elxsi</em> have taught me a lil bit of Java, a lot-a-bit of Python, and how to keep ML-driven analytics arriving on time.</p>
+    <p class="lead">These days I ship <em class="c-blue">small apps that listen when you speak</em> — and on fest weekends, you'll find me selling at a <em class="c-gold">Bebo-bear</em> stall.</p>
+    <div class="tiles">
+      <div class="tile">
+        <div class="num" id="numElxsi">—</div>
+        <div class="since">days since</div>
+        <div class="what">Joining Tata Elxsi</div>
+      </div>
+      <div class="tile t-green">
+        <div class="num" id="numIsro">—</div>
+        <div class="since">days since</div>
+        <div class="what">My ISRO internship</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="panel" id="panel-work" role="dialog" aria-modal="true" aria-label="Where I work">
+  <div class="panel-head"><button class="back-btn">← Back to the ride</button></div>
+  <div class="panel-body">
+    <div class="k">The tank — where I work</div>
+    <p class="quip">Three years. Pipelines, on time.</p>
+    <h2>Engineer · <em>Tata Elxsi</em></h2>
+    <div class="where">Trivandrum · Jul 2023 — Present</div>
+    <ul>
+      <li>Contributed to the Comcast-DevX application migration in an agile offshore model — scalable platform transitions, better data accessibility for analytics and ML</li>
+      <li>Built Python data automation pipelines for ingestion, preprocessing, and user provisioning in the Octane ecosystem — clean, ML-ready datasets, far less manual work</li>
+      <li>Spearheaded the Jira–Octane integration using MicroFocus Connect — cross-platform traceability and real-time insights</li>
+    </ul>
+    <div class="chips"><span class="chip peach">Python</span><span class="chip pink">Java</span><span class="chip blue">Data pipelines</span><span class="chip yellow">Octane</span><span class="chip green">Jira</span></div>
+    <h3>Intern · <em>ISRO</em></h3>
+    <div class="where">Trivandrum · Dec 2022 — Jan 2023</div>
+    <ul>
+      <li>Circular buffer logic and a USB push/pull communication protocol on the STM32F407G DISC-1</li>
+      <li>Embedded C in STM32CubeIDE, hands-on with hardware abstraction layers, alongside ISRO engineers on a real-time communication project</li>
+    </ul>
+    <div class="chips"><span class="chip blue">STM32</span><span class="chip peach">Embedded C</span><span class="chip green">HAL</span></div>
+  </div>
+</div>
+
+<div class="panel p-blue" id="panel-projects" role="dialog" aria-modal="true" aria-label="Things I built">
+  <div class="panel-head"><button class="back-btn">← Back to the ride</button></div>
+  <div class="panel-body">
+    <div class="k">The engine — things I built</div>
+    <p class="quip">One of them listens.</p>
+    <h2><a href="https://scrutiniz3r.github.io/days-since/" target="_blank" rel="noopener"><em>Days Since</em></a> — ML-powered habit tracker</h2>
+    <div class="where">The app this site is dressed like — tap the title to try it</div>
+    <ul>
+      <li>Single-file PWA with voice logging: fine-tuned DistilBERT intent classifier + zero-shot classification, served via a Cloudflare Worker. Open on Hugging Face and GitHub</li>
+    </ul>
+    <h3>Battery Management System — <em>KSRTC EV Mini-Bus</em></h3>
+    <div class="where">SCTCE × KSRTC · Oct 2022 — Apr 2023</div>
+    <ul>
+      <li>Designed, simulated, and optimized a BMS for an electric mini-bus using MATLAB and ML techniques</li>
+    </ul>
+    <h3>SOH estimation — <em>ANN vs GPR</em></h3>
+    <div class="where">Jan 2023 — Apr 2023</div>
+    <ul>
+      <li>Compared ANN and Gaussian Process Regression accuracy in predicting lithium-ion battery health</li>
+    </ul>
+    <h3><em>Predicto-R</em> — accident prevention</h3>
+    <ul>
+      <li>V2V / V2I communication with RF modules and Arduino for traffic-signal prediction and accident prevention</li>
+    </ul>
+  </div>
+</div>
+
+<div class="panel p-gold" id="panel-skills" role="dialog" aria-modal="true" aria-label="Skills">
+  <div class="panel-head"><button class="back-btn">← Back to the ride</button></div>
+  <div class="panel-body">
+    <div class="k">The helmet — skills</div>
+    <p class="quip">This is what's inside it.</p>
+    <div class="where">Languages</div>
+    <div class="chips"><span class="chip peach">Python</span><span class="chip pink">Java</span><span class="chip blue">Embedded C</span><span class="chip yellow">MATLAB</span></div>
+    <div class="where" style="margin-top:14px">Machine learning</div>
+    <div class="chips"><span class="chip blue">ANN &amp; GPR modelling</span><span class="chip peach">DistilBERT fine-tuning</span><span class="chip green">Zero-shot classification</span><span class="chip yellow">NLP</span></div>
+    <div class="where" style="margin-top:14px">Embedded &amp; hardware</div>
+    <div class="chips"><span class="chip green">STM32</span><span class="chip blue">Arduino</span><span class="chip peach">RF / V2V</span><span class="chip pink">HAL</span><span class="chip yellow">MEMS</span></div>
+    <div class="where" style="margin-top:14px">Data &amp; tools</div>
+    <div class="chips"><span class="chip yellow">Octane</span><span class="chip green">Jira</span><span class="chip peach">MicroFocus Connect</span><span class="chip blue">Cloudflare Workers</span><span class="chip pink">Hugging Face</span></div>
+  </div>
+</div>
+
+<div class="panel p-green" id="panel-school" role="dialog" aria-modal="true" aria-label="School days">
+  <div class="panel-head"><button class="back-btn">← Back to the ride</button></div>
+  <div class="panel-body">
+    <div class="k">The rear wheel — school days</div>
+    <p class="quip">Where it all started.</p>
+    <p>It started at <em class="c-green">Kendriya Vidyalaya Pattom, Shift 2</em> — a gold medal in the school-level maths olympiad, a bronze in English, and a perfect <em class="c-green">10 CGPA</em> in the 2016 CBSE Class X boards.</p>
+    <p>Then bio-maths for Class XI–XII, where I co-designed a <em class="c-gold">disabled-friendly toilet</em> for a Science Congress competition — my first taste of engineering built around actual human needs. Finished with <em class="c-green">96%</em> in the boards, second at school level, wrote both NEET and KEAM, and chose circuits.</p>
+  </div>
+</div>
+
+<div class="panel p-green" id="panel-college" role="dialog" aria-modal="true" aria-label="College">
+  <div class="panel-head"><button class="back-btn">← Back to the ride</button></div>
+  <div class="panel-body">
+    <div class="k">The front wheel — college</div>
+    <p class="quip">Where it was headed.</p>
+    <p>At <em class="c-green">SCT College of Engineering</em> I took Electronics &amp; Communication and graduated with an <em class="c-green">8.9 CGPA</em> — plus a <em class="c-blue">Minor in Machine Learning</em> (the plot twist this whole site is about) and <em class="c-green">Honours in MEMS</em>.</p>
+  </div>
+</div>
+
+<div class="panel p-gold" id="panel-teams" role="dialog" aria-modal="true" aria-label="Teams and stalls">
+  <div class="panel-head"><button class="back-btn">← Back to the ride</button></div>
+  <div class="panel-body">
+    <div class="k">The pillion seat — teams, stages &amp; stalls</div>
+    <p class="quip">Riding pillion: every team I've led.</p>
+    <h2>Sales Volunteer · <a href="https://www.instagram.com/thebebobear?igsh=NHF1dHJoNjh4czU2" target="_blank" rel="noopener"><em>Bebo-bear</em></a></h2>
+    <div class="where">Fests across Trivandrum — find them on Instagram</div>
+    <ul>
+      <li>Pitching to strangers, handling a live stall, learning how products actually get sold face to face</li>
+    </ul>
+    <div class="role-list" style="margin-top:14px">
+      <div class="row"><span class="r">Vice Chair</span><span class="o">Industrial Applications Society, IEEE SCT SB</span></div>
+      <div class="row"><span class="r">Content Head</span><span class="o">IEDC, SCTCE</span></div>
+      <div class="row"><span class="r">Technical Head</span><span class="o">Cybots — robotics club of SCTCE</span></div>
+      <div class="row"><span class="r">Technical Head</span><span class="o">CULT Away 2023 — cultural fest</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="panel" id="panel-contact" role="dialog" aria-modal="true" aria-label="Say Hii!">
+  <div class="panel-head"><button class="back-btn">← Back to the ride</button></div>
+  <div class="panel-body">
+    <div class="k">The headlight — say hi</div>
+    <p class="quip">It's pointing at you.</p>
+    <p class="lead">If you'd like to talk about a role or a project, write to <em class="c-terracotta">abbiraam2001@gmail.com</em>.</p>
+    <div class="contact-links">
+      <a href="mailto:abbiraam2001@gmail.com">Email</a>
+      <a href="https://github.com/scrutiniz3r">GitHub</a>
+      <a href="https://huggingface.co/scrutiniz3r">Hugging Face</a>
+      <a href="https://www.linkedin.com/in/abbiraam">LinkedIn</a>
+      <a href="https://scrutiniz3r.github.io/days-since/">Days Since</a>
+      <a href="https://docs.google.com/document/d/11MHsBDrLg7mejijW0InReReRcFSLMHuNR7eIV4lGGZw/edit?usp=sharing" target="_blank" rel="noopener">ATS-friendly Resume (doc)</a>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  // days-since counters
+  function daysSince(iso){
+    var ms = Date.now() - new Date(iso + 'T00:00:00').getTime();
+    return Math.max(0, Math.floor(ms / 86400000));
+  }
+  document.getElementById('numElxsi').textContent = daysSince('2023-07-01').toLocaleString();
+  document.getElementById('numIsro').textContent = daysSince('2023-01-31').toLocaleString();
+
+  // chip road speed = road speed (86px per second)
+  var track = document.querySelector('.chip-track');
+  var set = document.querySelector('.chip-set');
+  function chipSpeed(){
+    if(track && set && set.offsetWidth > 0){
+      track.style.animationDuration = (set.offsetWidth / 86) + 's';
+    }
+  }
+  // billboards drift at half road speed — they're further away
+  var bbTrack = document.querySelector('.bb-track');
+  var bbSet = document.querySelector('.bb-set');
+  function bbSpeed(){
+    if(bbTrack && bbSet && bbSet.offsetWidth > 0){
+      bbTrack.style.animationDuration = (bbSet.offsetWidth / 43) + 's';
+    }
+  }
+  function allSpeeds(){ chipSpeed(); bbSpeed(); }
+  allSpeeds();
+  window.addEventListener('resize', allSpeeds);
+  if(document.fonts && document.fonts.ready){ document.fonts.ready.then(allSpeeds); }
+
+  // panel open/close
+  var backdrop = document.getElementById('backdrop');
+  var open = null, lastTrigger = null, viaKeyboard = false;
+
+  function openPanel(name, trigger, kb){
+    var p = document.getElementById('panel-' + name);
+    if(!p) return;
+    if(open) open.classList.remove('on');
+    open = p; lastTrigger = trigger || null; viaKeyboard = !!kb;
+    p.classList.add('on');
+    backdrop.classList.add('on');
+    var btn = p.querySelector('.back-btn');
+    if(btn) btn.focus();
+  }
+  function closePanel(){
+    if(!open) return;
+    open.classList.remove('on');
+    backdrop.classList.remove('on');
+    if(viaKeyboard && lastTrigger && lastTrigger.focus){
+      lastTrigger.focus();
+    } else if(document.activeElement && document.activeElement.blur){
+      document.activeElement.blur(); // let the chip road roll again
+    }
+    open = null; lastTrigger = null; viaKeyboard = false;
+  }
+
+  document.querySelectorAll('[data-panel]').forEach(function(el){
+    function go(e, kb){ e.preventDefault(); e.stopPropagation(); openPanel(el.dataset.panel, el, kb); }
+    el.addEventListener('click', function(e){ go(e, e.detail === 0); });
+    el.addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' ') go(e, true); });
+  });
+  document.querySelectorAll('.back-btn').forEach(function(b){
+    b.addEventListener('click', closePanel);
+  });
+  backdrop.addEventListener('click', closePanel);
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closePanel(); });
+
+  // night ride toggle
+  var modeBtn = document.getElementById('modeBtn');
+  function setMode(dark){
+    document.body.classList.toggle('dark', dark);
+    modeBtn.textContent = dark ? '\u2600 Day ride' : '\u263e Night ride';
+    modeBtn.setAttribute('aria-pressed', String(dark));
+  }
+  setMode(window.matchMedia('(prefers-color-scheme: dark)').matches);
+  modeBtn.addEventListener('click', function(){
+    setMode(!document.body.classList.contains('dark'));
+  });
+})();
+</script>
+</body>
+</html>
