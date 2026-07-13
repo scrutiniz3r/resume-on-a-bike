@@ -56,27 +56,68 @@
   .scene{
     height:100svh;display:flex;flex-direction:column;
     align-items:center;justify-content:center;gap:clamp(10px,2.4vh,26px);
-    padding:20px;position:relative;
+    padding:14px 20px clamp(76px,12vh,132px);position:relative;
   }
   .hello{text-align:center}
   .hello h1{font-family:var(--font-display);font-weight:600;font-size:clamp(32px,5.4vw,58px);letter-spacing:-.01em}
   .hello h1 em{font-style:italic;font-weight:500;color:var(--terracotta)}
-  .hello p{margin-top:8px;font-size:clamp(13px,1.6vw,15px);color:var(--brown);max-width:56ch}
+  .hello p{margin-top:8px;font-size:clamp(16px,2.05vw,18.5px);color:var(--brown);max-width:56ch}
   .hello p b{color:var(--ink)}
   .hello p.hello-sub{margin-top:10px}
 
   .bike-wrap{width:min(92vw,760px);position:relative}
-  .bike-svg{width:100%;height:auto;display:block}
+  .bike-svg{width:min(86%,640px);height:auto;display:block;margin:clamp(30px,9vh,90px) auto 0}
   @keyframes ride{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
   #bikeG,#riderG{animation:ride 1.1s ease-in-out infinite}
   .spokes{animation:spin 1.4s linear infinite;transform-box:fill-box;transform-origin:center}
   @keyframes spin{to{transform:rotate(360deg)}}
-  .road{
-    height:8px;margin-top:-24px;border-radius:4px;
-    background:repeating-linear-gradient(90deg,#CBBB9C 0 46px,transparent 46px 86px);
-    animation:roadmove 1s linear infinite;
+
+  /* ---------- roadside billboards (life in passing) ---------- */
+  .billboards{
+    position:absolute;left:0;right:0;top:clamp(22px,4vh,40px);bottom:14px;z-index:0;overflow:hidden;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);
+    mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);
+    pointer-events:none;
   }
-  @keyframes roadmove{to{background-position-x:-86px}}
+  .bike-svg,.chip-road.asphalt{position:relative;z-index:1}
+  .bb-track{display:flex;width:max-content;height:100%;align-items:stretch;animation:bbroll 40s linear infinite}
+  .bb-set{display:flex;gap:150px;padding-right:150px;align-items:stretch}
+  @keyframes bbroll{to{transform:translateX(-50%)}}
+  .bb{display:flex;flex-direction:column;align-items:center;height:100%}
+  .board{
+    width:clamp(195px,27vw,245px);background:var(--card);border-radius:12px;box-shadow:var(--shadow);
+    padding:7px;position:relative;flex:none;
+    transform:perspective(700px) rotateY(-13deg);
+  }
+  /* lamp fixture across the top of each hoarding */
+  .lampbar{height:6px;background:#E4DAC6;border-radius:99px;margin:1px 4px 9px;position:relative;z-index:2}
+  .lampbar i{
+    position:absolute;top:5px;width:12px;height:8px;
+    background:#C9BCA6;border-radius:0 0 5px 5px;left:20%;
+  }
+  .lampbar i + i{left:auto;right:20%}
+  body.dark .lampbar{background:#5C5248}
+  body.dark .lampbar i{background:#FFE9A8;box-shadow:0 0 9px rgba(255,233,168,.85)}
+  body.dark .lampbar i::after{
+    content:"";position:absolute;top:7px;left:50%;transform:translateX(-50%);
+    width:120px;height:clamp(85px,12vh,115px);pointer-events:none;
+    background:radial-gradient(ellipse 55% 100% at 50% 0%,rgba(255,233,168,.38),transparent 75%);
+  }
+  .board img{width:100%;height:clamp(100px,14vh,128px);object-fit:cover;border-radius:8px;display:block}
+  .board .ph{
+    display:none;height:clamp(100px,14vh,128px);border-radius:8px;background:#F1E8D6;
+    font-size:42px;text-align:center;line-height:clamp(100px,14vh,128px);
+  }
+  .board.no-img img{display:none}
+  .board.no-img .ph{display:block}
+  .board .cap{
+    font-family:var(--font-display);font-style:italic;font-weight:500;
+    font-size:14px;color:var(--brown);text-align:center;padding:5px 2px 2px;
+  }
+  .pole{width:8px;flex:1;min-height:70px;background:#93806E;border-radius:0 0 3px 3px}
+  body.dark .board img{filter:brightness(.88)}
+  body.dark .board .ph{background:#3A3129}
+  body.dark .pole{background:#57493A}
 
   /* hotspots: softly outlined so they read as tappable on touch screens */
   .hot{
@@ -89,6 +130,25 @@
   .hot:hover,.hot:focus-visible{stroke:var(--terracotta);stroke-width:4;stroke-dasharray:7 7;fill:rgba(192,112,60,.07)}
 
   /* chip nav — a second road: chips roll past like traffic */
+  .chip-road.asphalt{
+    margin-top:-26px;height:60px;border-radius:14px;
+    background:#4A4038;border-top:3px solid #5C5248;
+    box-shadow:inset 0 6px 14px rgba(0,0,0,.18);
+  }
+  body.dark .chip-road.asphalt{background:#242019;border-top-color:#33291F}
+  .asphalt .chip-track{align-items:center;height:100%}
+  .asphalt .chip-set{gap:22px;padding-right:22px;align-items:center}
+  .dash{width:34px;height:6px;border-radius:3px;background:#EFE6D2;opacity:.75;flex:none;align-self:center}
+  body.dark .dash{background:#E8DDC4;opacity:.85}
+  .asphalt .nchip{
+    background:#F5F1E8;color:#4C4036;border:none;border-radius:8px;
+    padding:9px 26px;font-weight:600;white-space:nowrap;
+  }
+  .asphalt .nchip:hover{filter:brightness(1.06)}
+  .asphalt .nchip.dark{background:#DFA173;color:#4A2A12}
+  body.dark .asphalt .nchip{background:#D9D2C4;color:#33291F}
+  body.dark .asphalt .nchip.dark{background:#D98E57;color:#33200D}
+
   .chip-road{
     width:min(92vw,760px);overflow:hidden;padding:6px 0;
     -webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);
@@ -230,7 +290,6 @@
   body.dark .pack-body{fill:#453A2D}
   body.dark .pack-seam{stroke:#5F5040}
   body.dark .pack-strap{stroke:#57493A}
-  body.dark .road{background:repeating-linear-gradient(90deg,#4A3F31 0 46px,transparent 46px 86px)}
   body.dark .backdrop{background:rgba(0,0,0,.55)}
   body.dark .tile{background:#332B22}
   body.dark .panel-body p,body.dark .panel-body ul{color:#CBBFAF}
@@ -249,7 +308,7 @@
     .tiles{grid-template-columns:1fr}
   }
   @media (prefers-reduced-motion:reduce){
-    #bikeG,#riderG,.spokes,.road{animation:none}
+    #bikeG,#riderG,.spokes{animation:none}
     .panel,.backdrop{transition:none}
     .chip-track{animation:none;width:auto;flex-wrap:wrap;justify-content:center}
     .chip-set{flex-wrap:wrap;justify-content:center}
@@ -258,6 +317,9 @@
     body.dark .beam{animation:none}
     .hot{animation:none}
     .nchip.doc::after{animation:none}
+    .bb-track{animation:none}
+    .bb-set + .bb-set{display:none}
+    .billboards{mask-image:none;-webkit-mask-image:none}
     .mode-btn{transition:none}
   }
 </style>
@@ -381,35 +443,64 @@
         <circle class="hot" data-panel="contact" cx="502" cy="193" r="32" tabindex="0" role="button" aria-label="Headlight: Say Hii!"><title>headlight → Say Hii!</title></circle>
       </g>
     </svg>
-    <div class="road"></div>
-  </div>
-
-  <div class="chip-road" role="navigation" aria-label="Resume sections">
+  <div class="chip-road asphalt" role="navigation" aria-label="Resume sections">
     <div class="chip-track">
       <div class="chip-set">
-      <button class="nchip pink" data-panel="about">About me</button>
-      <button class="nchip peach" data-panel="work">Where I work</button>
-      <button class="nchip blue" data-panel="projects">Things I built</button>
       <a class="nchip doc" href="https://docs.google.com/document/d/11MHsBDrLg7mejijW0InReReRcFSLMHuNR7eIV4lGGZw/edit?usp=sharing" target="_blank" rel="noopener">ATS-friendly Resume</a>
+      <span class="dash" aria-hidden="true"></span>
+      <button class="nchip pink" data-panel="about">About me</button>
+      <span class="dash" aria-hidden="true"></span>
+      <button class="nchip peach" data-panel="work">Where I work</button>
+      <span class="dash" aria-hidden="true"></span>
+      <a class="nchip doc" href="https://docs.google.com/document/d/11MHsBDrLg7mejijW0InReReRcFSLMHuNR7eIV4lGGZw/edit?usp=sharing" target="_blank" rel="noopener">ATS-friendly Resume</a>
+      <span class="dash" aria-hidden="true"></span>
+      <button class="nchip blue" data-panel="projects">Things I built</button>
+      <span class="dash" aria-hidden="true"></span>
       <button class="nchip yellow" data-panel="skills">Skills</button>
+      <span class="dash" aria-hidden="true"></span>
+      <a class="nchip doc" href="https://docs.google.com/document/d/11MHsBDrLg7mejijW0InReReRcFSLMHuNR7eIV4lGGZw/edit?usp=sharing" target="_blank" rel="noopener">ATS-friendly Resume</a>
+      <span class="dash" aria-hidden="true"></span>
       <button class="nchip green" data-panel="school">School</button>
+      <span class="dash" aria-hidden="true"></span>
       <button class="nchip green" data-panel="college">College</button>
+      <span class="dash" aria-hidden="true"></span>
+      <a class="nchip doc" href="https://docs.google.com/document/d/11MHsBDrLg7mejijW0InReReRcFSLMHuNR7eIV4lGGZw/edit?usp=sharing" target="_blank" rel="noopener">ATS-friendly Resume</a>
+      <span class="dash" aria-hidden="true"></span>
       <button class="nchip yellow" data-panel="teams">Teams &amp; stalls</button>
+      <span class="dash" aria-hidden="true"></span>
       <button class="nchip dark" data-panel="contact">Say Hii!</button>
+      <span class="dash" aria-hidden="true"></span>
       </div>
       <div class="chip-set" aria-hidden="true">
-      <button tabindex="-1" class="nchip pink" data-panel="about">About me</button>
-      <button tabindex="-1" class="nchip peach" data-panel="work">Where I work</button>
-      <button tabindex="-1" class="nchip blue" data-panel="projects">Things I built</button>
       <a tabindex="-1" class="nchip doc" href="https://docs.google.com/document/d/11MHsBDrLg7mejijW0InReReRcFSLMHuNR7eIV4lGGZw/edit?usp=sharing" target="_blank" rel="noopener">ATS-friendly Resume</a>
+      <span class="dash" aria-hidden="true"></span>
+      <button tabindex="-1" class="nchip pink" data-panel="about">About me</button>
+      <span class="dash" aria-hidden="true"></span>
+      <button tabindex="-1" class="nchip peach" data-panel="work">Where I work</button>
+      <span class="dash" aria-hidden="true"></span>
+      <a tabindex="-1" class="nchip doc" href="https://docs.google.com/document/d/11MHsBDrLg7mejijW0InReReRcFSLMHuNR7eIV4lGGZw/edit?usp=sharing" target="_blank" rel="noopener">ATS-friendly Resume</a>
+      <span class="dash" aria-hidden="true"></span>
+      <button tabindex="-1" class="nchip blue" data-panel="projects">Things I built</button>
+      <span class="dash" aria-hidden="true"></span>
       <button tabindex="-1" class="nchip yellow" data-panel="skills">Skills</button>
+      <span class="dash" aria-hidden="true"></span>
+      <a tabindex="-1" class="nchip doc" href="https://docs.google.com/document/d/11MHsBDrLg7mejijW0InReReRcFSLMHuNR7eIV4lGGZw/edit?usp=sharing" target="_blank" rel="noopener">ATS-friendly Resume</a>
+      <span class="dash" aria-hidden="true"></span>
       <button tabindex="-1" class="nchip green" data-panel="school">School</button>
+      <span class="dash" aria-hidden="true"></span>
       <button tabindex="-1" class="nchip green" data-panel="college">College</button>
+      <span class="dash" aria-hidden="true"></span>
+      <a tabindex="-1" class="nchip doc" href="https://docs.google.com/document/d/11MHsBDrLg7mejijW0InReReRcFSLMHuNR7eIV4lGGZw/edit?usp=sharing" target="_blank" rel="noopener">ATS-friendly Resume</a>
+      <span class="dash" aria-hidden="true"></span>
       <button tabindex="-1" class="nchip yellow" data-panel="teams">Teams &amp; stalls</button>
+      <span class="dash" aria-hidden="true"></span>
       <button tabindex="-1" class="nchip dark" data-panel="contact">Say Hii!</button>
+      <span class="dash" aria-hidden="true"></span>
       </div>
     </div>
   </div>
+  </div>
+
 
   <div class="foot-note">© Abbiraam · Trivandrum, India · yes, that's really my bike</div>
 </div>
@@ -579,9 +670,18 @@
       track.style.animationDuration = (set.offsetWidth / 86) + 's';
     }
   }
-  chipSpeed();
-  window.addEventListener('resize', chipSpeed);
-  if(document.fonts && document.fonts.ready){ document.fonts.ready.then(chipSpeed); }
+  // billboards drift at half road speed — they're further away
+  var bbTrack = document.querySelector('.bb-track');
+  var bbSet = document.querySelector('.bb-set');
+  function bbSpeed(){
+    if(bbTrack && bbSet && bbSet.offsetWidth > 0){
+      bbTrack.style.animationDuration = (bbSet.offsetWidth / 43) + 's';
+    }
+  }
+  function allSpeeds(){ chipSpeed(); bbSpeed(); }
+  allSpeeds();
+  window.addEventListener('resize', allSpeeds);
+  if(document.fonts && document.fonts.ready){ document.fonts.ready.then(allSpeeds); }
 
   // panel open/close
   var backdrop = document.getElementById('backdrop');
